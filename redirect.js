@@ -1,7 +1,7 @@
-var http = require('http')
+var http = require('express')()
 
-http.createServer((req, res) => {
+http.get('*', ((req, res) => {
     res.redirect('https://' + req.headers.host + req.url)
-})
+}))
 
 http.listen(80)
