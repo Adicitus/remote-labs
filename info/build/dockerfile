@@ -1,0 +1,5 @@
+FROM node
+WORKDIR /app
+COPY ./app /app
+RUN npm install /app
+CMD node "/app/node_modules/http-server/bin/http-server" -p 80

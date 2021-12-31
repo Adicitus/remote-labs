@@ -1,0 +1,91 @@
+version: '3.8'
+services:
+    redirect:
+        hostname: redirect
+        image: nginx
+        restart: unless-stopped
+        networks:
+            - network1
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx/redirect/conf.d:/etc/nginx/conf.d
+            - ./certbot/.data/var:/webroot
+
+    proxy:
+        hostname: proxy
+        build: ./nginx/proxy/build
+        depends_on:
+            - guacamole
+        restart: unless-stopped
+        networks:
+            - network1
+        ports:
+            - "443:443"
+        volumes:
+            - ./nginx/proxy/conf.d:/etc/nginx/conf.d
+            - ./certbot/.data/etc:/certs
+        command: /bin/sh -c "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
+
+    certbot:
+        build: ./certbot/build
+        depends_on:
+            - redirect
+        restart: unless-stopped
+        networks:
+            - network1
+        volumes:
+            - ./certbot/.data/etc:/etc/letsencrypt
+            - ./certbot/.data/var:/var/www/certbot
+        entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"
+
+    mysql:
+        hostname: mysql
+        build: ./mysql/build
+        restart: unless-stopped
+        networks:
+            - network1
+        volumes:
+            - ./mysql/.data/db:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_USER: root
+            MYSQL_ROOT_PASSWORD: mr2r73jyqnfp52cn
+            MYSQL_DATABASE: guacamole_db
+            MYSQL_USER: guacamole_user
+            MYSQL_PASSWORD: ecg3vpnb6qhw5nsu
+
+
+    guacd:
+        hostname: guacd
+        image: guacamole/guacd
+        restart: unless-stopped
+        networks:
+            - network1
+
+
+    guacamole:
+        hostname: guacamole
+        build: ./guacamole/build
+        depends_on:
+            - guacd
+            - mysql
+        restart: unless-stopped
+        networks:
+            - network1
+        environment:
+            MYSQL_DATABASE: guacamole_db
+            MYSQL_HOSTNAME: mysql
+            MYSQL_USER: guacamole_user
+            MYSQL_PASSWORD: ecg3vpnb6qhw5nsu
+            GUACD_HOSTNAME: guacd
+
+    info:
+        hostname: info
+        build: ./info/build
+        restart: unless-stopped
+        networks:
+            - network1
+    
+networks:
+    network1:
+
