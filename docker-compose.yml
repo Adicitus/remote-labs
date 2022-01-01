@@ -47,12 +47,9 @@ services:
             - network1
         volumes:
             - ./mysql/.data/db:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_USER: root
-            MYSQL_ROOT_PASSWORD: mr2r73jyqnfp52cn
-            MYSQL_DATABASE: guacamole_db
-            MYSQL_USER: guacamole_user
-            MYSQL_PASSWORD: ecg3vpnb6qhw5nsu
+        env_file:
+            - ./conf/mysql.common.env
+            - ./conf/mysql.env
 
 
     guacd:
@@ -72,12 +69,9 @@ services:
         restart: unless-stopped
         networks:
             - network1
-        environment:
-            MYSQL_DATABASE: guacamole_db
-            MYSQL_HOSTNAME: mysql
-            MYSQL_USER: guacamole_user
-            MYSQL_PASSWORD: ecg3vpnb6qhw5nsu
-            GUACD_HOSTNAME: guacd
+        env_file:
+            - ./conf/mysql.common.env
+            - ./conf/guacamole.env
 
     info:
         hostname: info
