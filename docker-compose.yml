@@ -24,7 +24,7 @@ services:
             - "443:443"
         volumes:
             - ./nginx/proxy/conf.d:/etc/nginx/conf.d
-            - ./certbot/.data/etc:/certs
+            - ./certbot/.data/certs:/certs
         command: /bin/sh -c "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
 
     certbot:
@@ -35,6 +35,7 @@ services:
         networks:
             - network1
         volumes:
+            - ./certbot/.data/certs:/certificate_pub
             - ./certbot/.data/etc:/etc/letsencrypt
             - ./certbot/.data/var:/var/www/certbot
         env_file:
