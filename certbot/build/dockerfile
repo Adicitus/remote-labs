@@ -1,1 +1,4 @@
 FROM certbot/certbot
+COPY ./scripts /scripts
+RUN chmod a+x /scripts/entrypoint.sh
+CMD scripts/entrypoint.sh

@@ -37,7 +37,9 @@ services:
         volumes:
             - ./certbot/.data/etc:/etc/letsencrypt
             - ./certbot/.data/var:/var/www/certbot
-        entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"
+        env_file:
+            - ./conf/certbot.env
+        entrypoint: /scripts/entrypoint.sh
 
     mysql:
         hostname: mysql
