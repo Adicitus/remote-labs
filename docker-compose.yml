@@ -39,8 +39,9 @@ services:
             - ./certbot/.data/certs:/certificate_pub
             - ./certbot/.data/etc:/etc/letsencrypt
             - ./certbot/.data/var:/var/www/certbot
-        env_file:
-            - ./conf/certbot.env
+        environment:
+            - CERTBOT_DOMAINS
+            - CERTBOT_EMAIL
         entrypoint: /scripts/entrypoint.sh
 
     mysql:
@@ -51,9 +52,12 @@ services:
             - network1
         volumes:
             - ./mysql/.data/db:/var/lib/mysql
-        env_file:
-            - ./conf/mysql.common.env
-            - ./conf/mysql.env
+        environment:
+            - MYSQL_DATABASE
+            - MYSQL_USER
+            - MYSQL_PASSWORD
+            - MYSQL_ROOT_USER
+            - MYSQL_ROOT_PASSWORD
 
 
     guacd:
@@ -73,9 +77,12 @@ services:
         restart: unless-stopped
         networks:
             - network1
-        env_file:
-            - ./conf/mysql.common.env
-            - ./conf/guacamole.env
+        environment:
+            - GUACD_HOSTNAME
+            - MYSQL_HOSTNAME
+            - MYSQL_DATABASE
+            - MYSQL_USER
+            - MYSQL_PASSWORD
 
     info:
         hostname: info
