@@ -17,6 +17,7 @@ services:
         build: ./nginx/proxy/build
         depends_on:
             - guacamole
+            - certbot
         restart: unless-stopped
         networks:
             - network1

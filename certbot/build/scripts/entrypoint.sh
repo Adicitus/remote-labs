@@ -12,7 +12,7 @@ do
     fi
     
     domains=$(echo $CERTBOT_DOMAINS | tr "," "\n")
-    main_domain=$(echo $domains | head -n 1)
+    main_domain=$(echo "$domains" | head -n 1)
     srcpath="/etc/letsencrypt/live/$main_domain/cert.pem"
     dstpath="/certificate_pub/cert.pem"
     echo "Exporting: $srcpath --> $dstpath"
