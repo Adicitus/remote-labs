@@ -42,6 +42,7 @@ services:
         environment:
             - CERTBOT_DOMAINS
             - CERTBOT_EMAIL
+            - CERTBOT_STAGING
         entrypoint: /scripts/entrypoint.sh
 
     mysql:

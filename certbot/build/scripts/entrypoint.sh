@@ -4,11 +4,22 @@ trap exit TERM;
 while true
 do
     if test -d /etc/letsencrypt/live; then
-        # Check if the certificate needs to be renewed.
+        echo "Checking if the certificate needs to be renewed."
         certbot renew & wait $!
     else
-        # Attempt to get a certificate for the given domains.
-        certbot certonly --webroot -w /var/www/certbot -d $CERTBOT_DOMAINS --non-interactive --agree-tos -m $CERTBOT_EMAIL & wait $!
+        echo "Attempt to get a certificate for the given domains ($CERTBOT_DOMAINS)"
+        cmd="certbot certonly --webroot -w /var/www/certbot -d $CERTBOT_DOMAINS --non-interactive --agree-tos -m $CERTBOT_EMAIL"
+        staging=$(echo $CERTBOT_STAGING | tr '[:upper:]' '[:lower:]')
+        if [ -n ${CERTBOT_STAGING+x} ]; then
+            staging=$(echo $CERTBOT_STAGING | tr '[:upper:]' '[:lower:]')
+            if [[ $staging == yes ]]
+            then
+                echo "Getting a staging certificate.."
+                cmd="$cmd --staging"
+            fi
+        fi
+        echo "Running: $cmd"
+        $cmd & wait $!
     fi
     
     domains=$(echo $CERTBOT_DOMAINS | tr "," "\n")
