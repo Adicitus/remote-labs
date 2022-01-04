@@ -1,2 +1,3 @@
 FROM guacamole/guacamole
 COPY ./server.xml /usr/local/tomcat/conf/server.xml
+COPY ./catalina.sh /usr/local/tomcat/bin/catalina.sh
