@@ -78,6 +78,7 @@ services:
         networks:
             - network1
         environment:
+            - GUACAMOLE_EXTENSION_PRIORITY
             - GUACD_HOSTNAME
             - MYSQL_HOSTNAME
             - MYSQL_DATABASE
