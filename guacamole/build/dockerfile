@@ -1,5 +1,8 @@
-FROM guacamole/guacamole
+FROM guacamole/guacamole:1.4.0
 COPY ./server.xml  /usr/local/tomcat/conf/server.xml
 COPY ./catalina.sh /usr/local/tomcat/bin/catalina.sh
-RUN chmod a+x /usr/local/tomcat/bin/catalina.sh
 COPY ./start.sh /opt/guacamole/bin/start.sh
+USER root
+RUN chmod a+x /usr/local/tomcat/bin/catalina.sh
+RUN chmod a+x /opt/guacamole/bin/start.sh
+USER guacamole
