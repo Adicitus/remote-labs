@@ -90,14 +90,14 @@ services:
             - OPENID_CLIENT_ID
             - OPENID_REDIRECT_URI
 
-    info:
-        hostname: info
-        build: ./info/build
+    files:
+        hostname: files
+        build: ./files/build
         restart: unless-stopped
         networks:
             - network1
         volumes:
-            - ./info/public:/app/public
+            - ./files/public:/app/public
     
 networks:
     network1:
