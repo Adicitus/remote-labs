@@ -96,6 +96,8 @@ services:
         restart: unless-stopped
         networks:
             - network1
+        volumes:
+            - ./info/public:/app/public
     
 networks:
     network1:

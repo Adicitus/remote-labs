@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/CornerstoneIT/remote-labs#readme",
   "dependencies": {
-    "express": "^4.17.1",
-    "http-server": "^0.12.1"
+    "express": "^4.17.2",
+    "http-server": "^14.1.0"
   }
 }
