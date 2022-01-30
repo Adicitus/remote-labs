@@ -3,4 +3,4 @@ WORKDIR /app
 COPY ./app /app
 RUN npm install /app
 RUN npm audit fix --force
-CMD node "/app/node_modules/http-server/bin/http-server" -p 80
+CMD node /app/index.js
