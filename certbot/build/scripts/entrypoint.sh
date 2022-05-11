@@ -24,7 +24,7 @@ do
     
     domains=$(echo $CERTBOT_DOMAINS | tr "," "\n")
     main_domain=$(echo "$domains" | head -n 1)
-    srcpath="/etc/letsencrypt/live/$main_domain/cert.pem"
+    srcpath="/etc/letsencrypt/live/$main_domain/fullchain.pem"
     dstpath="/certificate_pub/cert.pem"
     echo "Exporting: $srcpath --> $dstpath"
     cp --update $srcpath $dstpath
