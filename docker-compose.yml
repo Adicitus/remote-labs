@@ -40,10 +40,11 @@ services:
             - ./certbot/.data/etc:/etc/letsencrypt
             - ./certbot/.data/var:/var/www/certbot
         environment:
+            - CERTBOT_SELFSIGNED
             - CERTBOT_DOMAINS
             - CERTBOT_EMAIL
             - CERTBOT_STAGING
-        entrypoint: /scripts/entrypoint.sh
+        entrypoint: /bin/sh /scripts/entrypoint.sh
 
     mysql:
         hostname: mysql
